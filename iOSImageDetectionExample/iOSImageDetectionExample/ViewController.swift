@@ -8,13 +8,90 @@
 
 import UIKit
 
-// http://stackoverflow.com/questions/25146557/how-do-i-get-the-color-of-a-pixel-in-a-uiimage-with-swift
 extension UIImage {
-    func getPixelColor(pos: CGPoint) -> UIColor {
-        // Read unscaled image's pixel data
+    // Does this UIImage have a white background?
+    func hasWhiteBackground() -> Bool {
+        // Measurement constants
+        let minConfidence = 0.9 // Minimum % confidence threshold
+        let cornerSize = 40 // Size of corners as squares to check (in pixel units)
+        
+        // Measurement variables
+        var confidence = 0.0 // What percentage of what we checked is white?
+        var numPixels = 0 // Number of pixels we checked
+        
+        // Obtain width and height
+        let width = Int(self.size.width)
+        let height = Int(self.size.height)
+        
+        // Obtain pixel's color data to analyze
         let pixelData = CGDataProviderCopyData(CGImageGetDataProvider(self.CGImage))
         let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
         
+        // Check the borders
+        for x in 0...width-1 {
+            // Along the left and right, check the whole row
+            if x == 0 || x == width-1 {
+                for y in 0...height-1 {
+                    if checkPixel(CGPoint(x: x, y: y), data: data) {
+                        confidence++
+                    }
+                    numPixels++
+                }
+            // Otherwise, just check the top and bottom
+            } else {
+                if checkPixel(CGPoint(x: x, y: 0), data: data) {
+                    confidence++
+                }
+                if checkPixel(CGPoint(x: x, y: height-1), data: data) {
+                    confidence++
+                }
+                numPixels += 2
+            }
+        }
+        
+        // Check the corners
+        for x in 1...cornerSize {
+            for y in 1...cornerSize {
+                if checkPixel(CGPoint(x: x, y: y), data: data) { // top-left
+                    confidence++
+                }
+                if checkPixel(CGPoint(x: width-x-1, y: y), data: data) { // top-right
+                    confidence++
+                }
+                if checkPixel(CGPoint(x: x, y: height-y-1), data: data) { // bottom-left
+                    confidence++
+                }
+                if checkPixel(CGPoint(x: width-x-1, y: height-y-1), data: data) { // bottom-right
+                    confidence++
+                }
+                numPixels += 4
+            }
+        }
+        
+        // Normalize confidence so it is 0-1 probability
+        confidence /= (Double)(numPixels)
+//        print("\(confidence*100)% confidence. Minimum is \(minConfidence*100)%.")
+        
+        return confidence >= minConfidence
+    }
+    
+    // Checks the pixel at the specific position to see if it is white enough or not
+    func checkPixel(pos: CGPoint, data: UnsafePointer<UInt8>) -> Bool {
+        // Minimum amount of white for a pixel to be considered white
+        let minWhite: CGFloat = 0.9
+        
+        // Read the pixel's color in terms of grayscale
+        let curPixelColor = self.getPixelColor(pos, data: data)
+        var white:CGFloat = 0
+        curPixelColor.getWhite(&white, alpha: nil)
+        
+        // Is the pixel white enough?
+        return white >= minWhite
+    }
+    
+    // http://stackoverflow.com/questions/25146557/how-do-i-get-the-color-of-a-pixel-in-a-uiimage-with-swift
+    // Obtain the UIColor of a pixel in the image
+    func getPixelColor(pos: CGPoint, data: UnsafePointer<UInt8>) -> UIColor {
         // Which pixel index is the parameter wanting us to look at?
         let pixelInfo: Int = ((Int(self.size.width) * Int(pos.y)) + Int(pos.x)) * 4
         
@@ -56,84 +133,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Dispose of any resources that can be recreated.
     }
     
-    // Takes in a UIImage and returns if it has a white background or not
-    func isWhiteBackground(image: UIImage) -> Bool {
-        // Measurement constants
-        let minConfidence = 0.9 // Minimum % confidence threshold
-        let cornerSize: Int = 40 // Size of corners as squares to check in pixel units
-        
-        // Measurement variables
-        var confidence = 0.0 // What percentage of what we checked is white?
-        var numPixels = 0 // Number of pixels we checked
-        
-        // Obtain width and height
-        let width = Int(image.size.width)
-        let height = Int(image.size.height)
-        
-        // Check the borders
-        for x in 0...width-1 {
-            // Along the left and right, check the whole row
-            if x == 0 || x == width {
-                for y in 0...height-1 {
-                    if checkPixel(CGPoint(x: x, y: y), image: image) {
-                        confidence++
-                    }
-                    numPixels++
-                }
-            // Otherwise, just check the top and bottom
-            } else {
-                if checkPixel(CGPoint(x: x, y: 0), image: image) {
-                    confidence++
-                }
-                if checkPixel(CGPoint(x: x, y: height-1), image: image) {
-                    confidence++
-                }
-                numPixels += 2
-            }
-        }
-        
-        // Check the corners
-        for x in 1...cornerSize {
-            for y in 1...cornerSize {
-                if checkPixel(CGPoint(x: x, y: y), image: image) { // top-left
-                    confidence++
-                }
-                if checkPixel(CGPoint(x: width-x-1, y: y), image: image) { // top-right
-                    confidence++
-                }
-                if checkPixel(CGPoint(x: x, y: height-y-1), image: image) { // bottom-left
-                    confidence++
-                }
-                if checkPixel(CGPoint(x: width-x-1, y: height-y-1), image: image) { // bottom-right
-                    confidence++
-                }
-                numPixels += 4
-            }
-        }
-        
-        // Normalize confidence so it is 0-1 probability
-        confidence /= (Double)(numPixels)
-        print("\(confidence*100)% confidence. Minimum is \(minConfidence*100)%.")
-        
-        return confidence >= minConfidence
-    }
-    
-    // Checks the pixel at the specific position to see if it is white enough or not
-    func checkPixel(pos: CGPoint, image: UIImage) -> Bool {
-        // Minimum amount of white for a pixel to be considered white (this sounds racist)
-        let minWhite: CGFloat = 0.9
-
-        // Read the pixel's color in terms of grayscale
-        let curPixelColor = image.getPixelColor(pos)
-        var white:CGFloat = 0
-        curPixelColor.getWhite(&white, alpha: nil)
-        
-        // Is the pixel white enough?
-        return white >= minWhite
-    }
-    
     func checkIfWhiteBackground() {
-        let isWhite = isWhiteBackground(imageView.image!)
+        let isWhite = imageView.image!.hasWhiteBackground()
         
         switchView.setOn(isWhite, animated: true)
     }
@@ -152,8 +153,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         imageView.image = image
         
-        checkIfWhiteBackground()
-        
-        dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: {
+            () -> Void in
+            self.checkIfWhiteBackground()
+        })
     }
 }
