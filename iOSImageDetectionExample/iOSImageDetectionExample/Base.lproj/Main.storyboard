@@ -24,8 +24,9 @@
                                     <rect key="frame" x="176" y="549" width="51" height="31"/>
                                 </variation>
                             </switch>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cm7-fi-nwf">
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cm7-fi-nwf">
                                 <rect key="frame" x="119" y="147" width="363" height="305"/>
+                                <color key="backgroundColor" name="selectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="360" id="nwm-fC-TPK"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="360" id="zzp-fJ-sZz"/>
