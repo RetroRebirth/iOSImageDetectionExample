@@ -18,29 +18,77 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cm7-fi-nwf">
-                                <rect key="frame" x="180" y="236" width="240" height="128"/>
-                            </imageView>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ojQ-K3-UJ7">
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ojQ-K3-UJ7">
                                 <rect key="frame" x="276" y="549" width="51" height="31"/>
+                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="176" y="549" width="51" height="31"/>
+                                </variation>
                             </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Does this image have a white background?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DmR-MF-CA3">
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cm7-fi-nwf">
+                                <rect key="frame" x="119" y="147" width="363" height="305"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="360" id="nwm-fC-TPK"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="360" id="zzp-fJ-sZz"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="nwm-fC-TPK"/>
+                                        <exclude reference="zzp-fJ-sZz"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="20" y="120" width="360" height="360"/>
+                                    <mask key="constraints">
+                                        <include reference="nwm-fC-TPK"/>
+                                        <include reference="zzp-fJ-sZz"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Does this image have a white background?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DmR-MF-CA3">
                                 <rect key="frame" x="20" y="20" width="560" height="43"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="20" y="20" width="360" height="92"/>
+                                </variation>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ojQ-K3-UJ7" firstAttribute="centerX" secondItem="Cm7-fi-nwf" secondAttribute="centerX" id="FfX-OK-bmv"/>
-                            <constraint firstItem="Cm7-fi-nwf" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Mfk-ke-TNQ"/>
-                            <constraint firstItem="DmR-MF-CA3" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="O4S-Fa-l5M"/>
-                            <constraint firstAttribute="bottom" secondItem="ojQ-K3-UJ7" secondAttribute="bottom" constant="20" symbolic="YES" id="W1h-Ij-YF9"/>
-                            <constraint firstItem="Cm7-fi-nwf" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="aP1-6C-wD3"/>
-                            <constraint firstItem="DmR-MF-CA3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="cGc-7K-SbI"/>
-                            <constraint firstItem="DmR-MF-CA3" firstAttribute="centerX" secondItem="Cm7-fi-nwf" secondAttribute="centerX" id="x3e-JM-Eig"/>
+                            <constraint firstItem="ojQ-K3-UJ7" firstAttribute="top" secondItem="Cm7-fi-nwf" secondAttribute="bottom" constant="69" id="3ol-Pu-d9i"/>
+                            <constraint firstItem="Cm7-fi-nwf" firstAttribute="top" secondItem="DmR-MF-CA3" secondAttribute="bottom" constant="57" id="b8g-WT-DrW"/>
+                            <constraint firstItem="Cm7-fi-nwf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="flc-MF-Kxt"/>
+                            <constraint firstItem="Cm7-fi-nwf" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="gO2-d6-UYF"/>
+                            <constraint firstItem="Cm7-fi-nwf" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="jGb-3V-abb"/>
+                            <constraint firstItem="Cm7-fi-nwf" firstAttribute="leading" secondItem="DmR-MF-CA3" secondAttribute="leading" id="jUz-Nz-uG9"/>
+                            <constraint firstItem="DmR-MF-CA3" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vKg-y6-vur"/>
+                            <constraint firstItem="Cm7-fi-nwf" firstAttribute="centerX" secondItem="ojQ-K3-UJ7" secondAttribute="centerX" id="xn1-qz-ycS"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="vKg-y6-vur"/>
+                                <exclude reference="b8g-WT-DrW"/>
+                                <exclude reference="flc-MF-Kxt"/>
+                                <exclude reference="gO2-d6-UYF"/>
+                                <exclude reference="jGb-3V-abb"/>
+                                <exclude reference="jUz-Nz-uG9"/>
+                                <exclude reference="xn1-qz-ycS"/>
+                                <exclude reference="3ol-Pu-d9i"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="constraints">
+                                <include reference="vKg-y6-vur"/>
+                                <include reference="b8g-WT-DrW"/>
+                                <include reference="flc-MF-Kxt"/>
+                                <include reference="gO2-d6-UYF"/>
+                                <include reference="jGb-3V-abb"/>
+                                <include reference="jUz-Nz-uG9"/>
+                                <include reference="xn1-qz-ycS"/>
+                                <include reference="3ol-Pu-d9i"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="imageView" destination="Cm7-fi-nwf" id="GG1-Zb-MXd"/>
@@ -49,7 +97,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="245" y="265"/>
+            <point key="canvasLocation" x="244.5" y="265"/>
         </scene>
     </scenes>
 </document>

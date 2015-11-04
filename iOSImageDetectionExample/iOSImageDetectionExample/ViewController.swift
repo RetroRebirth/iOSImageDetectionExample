@@ -27,33 +27,64 @@ extension UIImage {
     }
 }
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var switchView: UISwitch!
+   
+    let imagePicker = UIImagePickerController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+
+        imagePicker.delegate = self
         
-        // TODO Tap image to load an image
+        // Tap image to load an image
+        let tappedImageRecognizer = UITapGestureRecognizer(target: self, action: "loadImage:")
+        imageView.addGestureRecognizer(tappedImageRecognizer)
+        
+        // Load initial image
         let image = UIImage(named: "not-white-1")!
         imageView.image = image
         
-        let width = image.size.width - 1
-        let height = image.size.height - 1
-        
-        print("0, 0: \(image.getPixelColor(CGPoint(x: 0, y: 0)))")
-        print("\(width), \(height): \(image.getPixelColor(CGPoint(x: width, y: height)))")
-        print("\(width/2), \(height/2): \(image.getPixelColor(CGPoint(x: width/2, y: height/2)))")
-        
-        // TODO Turn switch on/off to show if image has a white background
+        // Update switch
+        checkIfWhiteBackground()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
+    
+    // Takes in a UIImage and returns if it has a white background or not
+    func isWhiteBackground(image: UIImage?) -> Bool {
+        // TODO
+        return true
+    }
+    
+    func checkIfWhiteBackground() {
+        let isWhite = isWhiteBackground(imageView.image)
+        
+        switchView.setOn(isWhite, animated: true)
+    }
+    
+    // Image view was tapped, let user choose image from their photo library
+    func loadImage(sender: UITapGestureRecognizer) {
+        if sender.state == .Ended {
+            imagePicker.allowsEditing = false
+            imagePicker.sourceType = .PhotoLibrary
+            
+            presentViewController(imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    // Load new image and update switch
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        imageView.image = image
+        
+        checkIfWhiteBackground()
+        
+        dismissViewControllerAnimated(true, completion: nil)
+    }
 }
