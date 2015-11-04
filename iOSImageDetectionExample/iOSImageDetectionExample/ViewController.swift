@@ -29,9 +29,25 @@ extension UIImage {
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var switchView: UISwitch!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        // TODO Tap image to load an image
+        let image = UIImage(named: "not-white-1")!
+        imageView.image = image
+        
+        let width = image.size.width - 1
+        let height = image.size.height - 1
+        
+        print("0, 0: \(image.getPixelColor(CGPoint(x: 0, y: 0)))")
+        print("\(width), \(height): \(image.getPixelColor(CGPoint(x: width, y: height)))")
+        print("\(width/2), \(height/2): \(image.getPixelColor(CGPoint(x: width/2, y: height/2)))")
+        
+        // TODO Turn switch on/off to show if image has a white background
     }
 
     override func didReceiveMemoryWarning() {
