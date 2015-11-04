@@ -60,7 +60,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func isWhiteBackground(image: UIImage) -> Bool {
         // Measurement constants
         let minConfidence = 0.9 // Minimum % confidence threshold
-        let cornerSize: Int = 20 // Size of corners as squares to check in pixel units
+        let cornerSize: Int = 40 // Size of corners as squares to check in pixel units
         
         // Measurement variables
         var confidence = 0.0 // What percentage of what we checked is white?
@@ -113,6 +113,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         // Normalize confidence so it is 0-1 probability
         confidence /= (Double)(numPixels)
+        print("\(confidence*100)% confidence. Minimum is \(minConfidence*100)%.")
         
         return confidence >= minConfidence
     }
